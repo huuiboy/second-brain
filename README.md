@@ -22,6 +22,15 @@ In Obsidian: **Open folder as vault → `/config/brain`**.
 - Slash commands: `/remember <fact>`, `/recall <topic>`, `/reflect`.
 - Global `~/.claude/CLAUDE.md` section telling Claude to read and write the brain.
 
+## Use it from Claude Code on a Windows PC (home LAN)
+1. On ufinger: `sudo bash setup-samba.sh` — shares `~/brain` as `\\10.168.168.194\brain` (LAN only),
+   sets a network-drive password, and adds a 15-min auto-commit cron.
+2. On Windows, in a normal (non-admin) PowerShell, from the folder holding `install-windows.ps1`:
+   `powershell -ExecutionPolicy Bypass -File .\install-windows.ps1`
+   — maps the brain as `B:`, adds a SessionStart hook, `~/.claude/CLAUDE.md` instructions and
+   `/remember` `/recall` `/reflect` commands.
+3. Restart the Claude desktop app. Ask "what's in my second brain?" to test.
+
 ## Always-on Remote Control (optional)
 ```bash
 sudo loginctl enable-linger $USER
