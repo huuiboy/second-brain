@@ -1,0 +1,19 @@
+# Obsidian (browser-accessible) on ufinger, using ~/brain as the vault.
+# Open https://10.168.168.194:3001  -> "Open folder as vault" -> /config/brain
+services:
+  obsidian:
+    image: lscr.io/linuxserver/obsidian:latest
+    container_name: obsidian
+    environment:
+      - PUID=${PUID:-1000}          # must match `id -u` so Claude & Obsidian can both edit notes
+      - PGID=${PGID:-1000}          # must match `id -g`
+      - TZ=${TZ:-Etc/UTC}
+      - CUSTOM_USER=${OBSIDIAN_USER:-admin}
+      - PASSWORD=${OBSIDIAN_PASSWORD:?set OBSIDIAN_PASSWORD in .env}
+    volumes:
+      - ./obsidian-config:/config            # Obsidian app settings
+      - ${BRAIN_DIR:-${HOME}/brain}:/config/brain   # the vault = Claude's second brain
+    ports:
+      - 3001:3001                   # HTTPS (self-signed cert). LAN only — don't port-forward this.
+    shm_size: "1gb"
+    restart: unless-stopped
